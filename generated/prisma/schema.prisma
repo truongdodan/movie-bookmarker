@@ -19,3 +19,27 @@ model Post {
 
   @@index([name])
 }
+
+model User {
+  id             Int      @id @default(autoincrement())
+  email          String   @unique
+  username       String   @unique
+  hashedPassword String
+  createdAt      DateTime @default(now())
+
+  bookmarks Bookmark[]
+
+  @@index([username])
+}
+
+model Bookmark {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  movieId   String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, movieId])
+  @@index([userId])
+}

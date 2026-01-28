@@ -128,6 +128,21 @@ exports.Prisma.PostScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  username: 'username',
+  hashedPassword: 'hashedPassword',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.BookmarkScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  movieId: 'movieId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -140,7 +155,9 @@ exports.Prisma.QueryMode = {
 
 
 exports.Prisma.ModelName = {
-  Post: 'Post'
+  Post: 'Post',
+  User: 'User',
+  Bookmark: 'Bookmark'
 };
 
 /**
