@@ -2,7 +2,6 @@
 
 import { api } from "~/trpc/react";
 import { SignupForm } from "./_components/signup-form";
-import { useState } from "react";
 
 export default function Page() {
       const register = api.auth.register.useMutation();

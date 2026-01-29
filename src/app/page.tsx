@@ -1,10 +1,14 @@
+import { getServerSession } from "next-auth";
 import Link from "next/link";
 
 import { LatestPost } from "~/app/_components/post";
+import { authOptions } from "~/server/api/routers/auth";
 import { api, HydrateClient } from "~/trpc/server";
 
 export default async function Home() {
   const hello = await api.post.hello({ text: "from tRPC" });
+  const session = await getServerSession(authOptions);
+  console.log(session);
 
   void api.post.getLatest.prefetch();
 
@@ -41,7 +45,7 @@ export default async function Home() {
           </div>
           <div className="flex flex-col items-center gap-2">
             <p className="text-2xl text-white">
-              {hello ? hello.greeting : "Loading tRPC query..."}
+              {session?.user?.name ? `Hello, ${session.user.name}!` : "Loading user..."}
             </p>
           </div>
 
