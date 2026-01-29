@@ -6,28 +6,20 @@ import { useState } from "react";
 
 export default function Page() {
       const register = api.auth.register.useMutation();
-    const [error, setError] = useState('');
 
       async function handleSignup(data: {
         email: string,
         username: string, 
         password: string
       }) {
-        try {
-            await register.mutateAsync(data);
-            setError('');
-
-            
-        } catch (err: any) {
-            setError(err.message ?? "Something went wrong");
-        }
+          await register.mutateAsync(data);
         
       }
 
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm">
-        <SignupForm onSubmit={handleSignup} error={error}/>
+        <SignupForm onSubmit={handleSignup} error={register.error?.message} isLoading={register.isLoading} />
       </div>
     </div>
   )

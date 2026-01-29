@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { useState } from "react"
 import { Button } from "~/components/ui/button"
 import {
@@ -23,16 +24,16 @@ type Props = {
     password: string,
   }) => Promise<void>,
   error?: string | null,
+  isLoading?: boolean,
 } & React.ComponentProps<typeof Card>
 
-export function SignupForm({ onSubmit, error, ...props }: Props) {
+export function SignupForm({ onSubmit, error, isLoading, ...props }: Props) {
   const [form, setForm] = useState<SignupInput>({
     email: '',
     username: '',
     password: '',
     confirmPassword: '',
   });
-
   const [fieldErrors, setFieldErrors] = useState<Partial<SignupInput>>({});
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -41,6 +42,7 @@ export function SignupForm({ onSubmit, error, ...props }: Props) {
     const result = signupSchema.safeParse(form);
 
     if (!result.success) {
+      // Put errors into array for displaying on each field
       const errors: typeof fieldErrors = {};
       result.error.issues.forEach((issue) => {
         const key = issue.path[0] as keyof SignupInput;
@@ -52,10 +54,20 @@ export function SignupForm({ onSubmit, error, ...props }: Props) {
     }
 
     setFieldErrors({});
+
     onSubmit({
       email: form.email,
       username: form.username,
       password: form.password,
+    });
+
+    if (error || isLoading) return;
+
+    setForm({
+      email: '',
+      username: '',
+      password: '',
+      confirmPassword: '',
     });
 
   }
@@ -84,6 +96,7 @@ export function SignupForm({ onSubmit, error, ...props }: Props) {
                   }))
                 }}
                 required
+                disabled={isLoading}
               />
               {/* <FieldDescription>
                 We&apos;ll use this to contact you. We will not share your email
@@ -102,6 +115,7 @@ export function SignupForm({ onSubmit, error, ...props }: Props) {
                   }))
                 )}  
                 required
+                disabled={isLoading}
               />
               {fieldErrors.username && (
                 <FieldDescription className="text-red-500">
@@ -121,6 +135,7 @@ export function SignupForm({ onSubmit, error, ...props }: Props) {
                   }))
                 )}  
                 required
+                disabled={isLoading}
               />
               {fieldErrors.password && (
                 <FieldDescription className="text-red-500">
@@ -142,6 +157,7 @@ export function SignupForm({ onSubmit, error, ...props }: Props) {
                   }))
                 )}  
                 required
+                disabled={isLoading}
               />
               {fieldErrors.confirmPassword && (
                 <FieldDescription className="text-red-500">
@@ -150,13 +166,18 @@ export function SignupForm({ onSubmit, error, ...props }: Props) {
               )}
             </Field>
             <FieldGroup>
+              {error && (
+                <FieldDescription className="text-red-500">{error}</FieldDescription>
+              )}
               <Field>
-                <Button type="submit">Create Account</Button>
+                <Button type="submit">
+                  {isLoading ? 'Signing up...' : 'Sign up'}
+                </Button>
                 {/* <Button variant="outline" type="button">
                   Sign up with Google
                 </Button> */}
                 <FieldDescription className="px-6 text-center">
-                  Already have an account? <a href="#">Sign in</a>
+                  Already have an account? <Link href="/login" className="underline">Login</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>
