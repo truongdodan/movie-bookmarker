@@ -15,9 +15,10 @@ type MovieCardProps = {
     posterPath: string | null;
     rating: number;
     releaseDate: string;
+    onClick: () => void;
 }
 
-export function MovieCard({title, posterPath, rating, releaseDate}: MovieCardProps) {
+export function MovieCard({title, posterPath, rating, releaseDate, onClick}: MovieCardProps) {
   return (
     <Card className="relative mx-auto w-full max-w-sm overflow-hidden pt-0
     cursor-pointer

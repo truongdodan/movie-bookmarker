@@ -2,6 +2,7 @@
 
 import { api } from "~/trpc/react";
 import { MovieCard } from "./movie-card";
+import Link from "next/link";
 
 export function MovieList() {
     const {data, isLoading, error} = api.movie.popular.useQuery();
@@ -13,9 +14,11 @@ export function MovieList() {
         <>
             <h1 className="mb-4 text-2xl font-semibold">Popular Movies</h1>
             
-            <ul className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <ul className="grid grid-cols-2 md:grid-cols-5 gap-6">
                 {data?.results?.map((movie: any) => (
-                    <MovieCard key={movie.id} {...movie}/>
+                    <Link href={`/movie/${movie.id}`} className="block" key={movie.id}>
+                        <MovieCard {...movie} />
+                    </Link>
                 ))}
             </ul>
         </>
