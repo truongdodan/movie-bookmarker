@@ -5,6 +5,8 @@ import { Geist } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import Navbar from "~/components/navbar";
+import { Provider } from "./provider";
+import { getServerAuthSession } from "~/server/auth";
 
 export const metadata: Metadata = {
   title: "Popcorn",
@@ -17,19 +19,23 @@ const geist = Geist({
   variable: "--font-geist-sans",
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const session = await getServerAuthSession();
+
   return (
     <html lang="en" className={`${geist.variable}`}>
-      <body>
-        <Navbar />
-        <main className="min-h-screen">
-          <div className="mx-auto max-w-7xl px-4 py-6">
-            <TRPCReactProvider>{children}</TRPCReactProvider>
-          </div>
-        </main>
-      </body>
+      <Provider session={session}>
+        <body>
+          <Navbar />
+          <main className="min-h-screen">
+            <div className="mx-auto max-w-7xl px-4 py-6">
+              <TRPCReactProvider>{children}</TRPCReactProvider>
+            </div>
+          </main>
+        </body>
+      </Provider>
     </html>
   );
 }

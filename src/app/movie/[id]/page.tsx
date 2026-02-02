@@ -1,17 +1,32 @@
 "use client"
 
 import { BookmarkIcon } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
 
 export default function MovieDetails() {
+    const {status} = useSession();
+    const router = useRouter();
     const params = useParams<{id: string}>();
     const id = params.id;
 
     const {data, isLoading, error} = api.movie.details.useQuery({id});
 
+    function handleBookmark() {
+        if (status === "unauthenticated") {
+            router.push("/login");
+            return;
+        }
+
+        console.log("You bookmarked this movie!");
+        
+    }
+
     if (isLoading) return <h1>Loading movie...</h1>
     if (error) return <h1>Failed to load error: {error.message}</h1>
+    if (!data) return <h1>There is no movie data.</h1>
 
     const {title, posterPath, rating, releaseDate, overview} = data;
 
@@ -55,7 +70,7 @@ export default function MovieDetails() {
                 className="rounded-full border p-3 transition hover:bg-muted"
                 aria-label="Bookmark movie"
                 >
-                <BookmarkIcon className="h-5 w-5" />
+                <BookmarkIcon className="h-5 w-5" onClick={handleBookmark}/>
                 </button>
             </div>
 

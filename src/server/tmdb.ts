@@ -17,8 +17,8 @@ export async function fetchPopularMovies() {
     return res.json();
 }
 
-export async function fetchMovieDetails(movieId: string) {
-    const url = `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`;
+export async function fetchMovieDetails(id: string) {
+    const url = `https://api.themoviedb.org/3/movie/${id}?language=en-US`;
     const options = {
         method: 'GET',
         headers: {
