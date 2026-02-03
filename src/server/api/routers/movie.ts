@@ -31,6 +31,5 @@ export const movieRouter = createTRPCRouter({
                 rating: movie.vote_average,
                 overview: movie.overview
             };
-        })
-
+    }),
 });

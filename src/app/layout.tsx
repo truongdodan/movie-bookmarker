@@ -6,7 +6,7 @@ import { Geist } from "next/font/google";
 import { TRPCReactProvider } from "~/trpc/react";
 import Navbar from "~/components/navbar";
 import { Provider } from "./provider";
-import { getServerAuthSession } from "~/server/auth";
+import { getServerAuthSession } from "~/server/auth-session";
 
 export const metadata: Metadata = {
   title: "Popcorn",

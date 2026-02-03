@@ -1,6 +1,6 @@
 "use client"
 
-import { BookmarkIcon } from "lucide-react";
+import { BookmarkCheck, BookmarkIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
@@ -10,9 +10,22 @@ export default function MovieDetails() {
     const {status} = useSession();
     const router = useRouter();
     const params = useParams<{id: string}>();
-    const id = params.id;
+    const id = params.id
 
+    const untils = api.useUtils();
     const {data, isLoading, error} = api.movie.details.useQuery({id});
+    const {data: isBookmarked} = api.bookmark.isBookmarked.useQuery({id: Number(id)});
+    const addBookmark = api.bookmark.add.useMutation({
+        onSuccess: () => {
+            untils.bookmark.isBookmarked.invalidate({id: Number(id)});
+        }
+    });
+    const removeBookmark = api.bookmark.remove.useMutation({
+        onSuccess: () => {
+            untils.bookmark.isBookmarked.invalidate({id: Number(id)});
+        }
+    });
+    const isUpdating = addBookmark.isPending || removeBookmark.isPending;
 
     function handleBookmark() {
         if (status === "unauthenticated") {
@@ -20,7 +33,12 @@ export default function MovieDetails() {
             return;
         }
 
-        console.log("You bookmarked this movie!");
+        if (isBookmarked) {
+            removeBookmark.mutate({id: Number(id)});
+            return;
+        } else {
+            addBookmark.mutate({id: Number(id)});
+        }
         
     }
 
@@ -69,8 +87,14 @@ export default function MovieDetails() {
                 type="button"
                 className="rounded-full border p-3 transition hover:bg-muted"
                 aria-label="Bookmark movie"
+                disabled={isUpdating}
+                onClick={handleBookmark}
                 >
-                <BookmarkIcon className="h-5 w-5" onClick={handleBookmark}/>
+                {
+                    isBookmarked
+                        ? <BookmarkCheck className="h-5 w-5 text-yellow-500" />
+                        : <BookmarkIcon className="h-5 w-5" />
+                }
                 </button>
             </div>
 

@@ -3,7 +3,7 @@ import { Logo } from "~/components/logo";
 import { NavMenu } from "~/components/nav-menu";
 import { NavigationSheet } from "~/components/navigation-sheet";
 import Link from "next/link";
-import { getServerAuthSession } from "~/server/auth";
+import { getServerAuthSession } from "~/server/auth-session";
 import { Bookmark } from "lucide-react";
 
 const Navbar = async () => {

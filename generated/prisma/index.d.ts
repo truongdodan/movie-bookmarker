@@ -3208,24 +3208,26 @@ export namespace Prisma {
   export type BookmarkAvgAggregateOutputType = {
     id: number | null
     userId: number | null
+    movieId: number | null
   }
 
   export type BookmarkSumAggregateOutputType = {
     id: number | null
     userId: number | null
+    movieId: number | null
   }
 
   export type BookmarkMinAggregateOutputType = {
     id: number | null
     userId: number | null
-    movieId: string | null
+    movieId: number | null
     createdAt: Date | null
   }
 
   export type BookmarkMaxAggregateOutputType = {
     id: number | null
     userId: number | null
-    movieId: string | null
+    movieId: number | null
     createdAt: Date | null
   }
 
@@ -3241,11 +3243,13 @@ export namespace Prisma {
   export type BookmarkAvgAggregateInputType = {
     id?: true
     userId?: true
+    movieId?: true
   }
 
   export type BookmarkSumAggregateInputType = {
     id?: true
     userId?: true
+    movieId?: true
   }
 
   export type BookmarkMinAggregateInputType = {
@@ -3359,7 +3363,7 @@ export namespace Prisma {
   export type BookmarkGroupByOutputType = {
     id: number
     userId: number
-    movieId: string
+    movieId: number
     createdAt: Date
     _count: BookmarkCountAggregateOutputType | null
     _avg: BookmarkAvgAggregateOutputType | null
@@ -3432,7 +3436,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       userId: number
-      movieId: string
+      movieId: number
       createdAt: Date
     }, ExtArgs["result"]["bookmark"]>
     composites: {}
@@ -3860,7 +3864,7 @@ export namespace Prisma {
   interface BookmarkFieldRefs {
     readonly id: FieldRef<"Bookmark", 'Int'>
     readonly userId: FieldRef<"Bookmark", 'Int'>
-    readonly movieId: FieldRef<"Bookmark", 'String'>
+    readonly movieId: FieldRef<"Bookmark", 'Int'>
     readonly createdAt: FieldRef<"Bookmark", 'DateTime'>
   }
     
@@ -4513,7 +4517,7 @@ export namespace Prisma {
     NOT?: BookmarkWhereInput | BookmarkWhereInput[]
     id?: IntFilter<"Bookmark"> | number
     userId?: IntFilter<"Bookmark"> | number
-    movieId?: StringFilter<"Bookmark"> | string
+    movieId?: IntFilter<"Bookmark"> | number
     createdAt?: DateTimeFilter<"Bookmark"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
@@ -4533,7 +4537,7 @@ export namespace Prisma {
     OR?: BookmarkWhereInput[]
     NOT?: BookmarkWhereInput | BookmarkWhereInput[]
     userId?: IntFilter<"Bookmark"> | number
-    movieId?: StringFilter<"Bookmark"> | string
+    movieId?: IntFilter<"Bookmark"> | number
     createdAt?: DateTimeFilter<"Bookmark"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "userId_movieId">
@@ -4556,7 +4560,7 @@ export namespace Prisma {
     NOT?: BookmarkScalarWhereWithAggregatesInput | BookmarkScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Bookmark"> | number
     userId?: IntWithAggregatesFilter<"Bookmark"> | number
-    movieId?: StringWithAggregatesFilter<"Bookmark"> | string
+    movieId?: IntWithAggregatesFilter<"Bookmark"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Bookmark"> | Date | string
   }
 
@@ -4664,7 +4668,7 @@ export namespace Prisma {
   }
 
   export type BookmarkCreateInput = {
-    movieId: string
+    movieId: number
     createdAt?: Date | string
     user: UserCreateNestedOneWithoutBookmarksInput
   }
@@ -4672,12 +4676,12 @@ export namespace Prisma {
   export type BookmarkUncheckedCreateInput = {
     id?: number
     userId: number
-    movieId: string
+    movieId: number
     createdAt?: Date | string
   }
 
   export type BookmarkUpdateInput = {
-    movieId?: StringFieldUpdateOperationsInput | string
+    movieId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutBookmarksNestedInput
   }
@@ -4685,26 +4689,26 @@ export namespace Prisma {
   export type BookmarkUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
-    movieId?: StringFieldUpdateOperationsInput | string
+    movieId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type BookmarkCreateManyInput = {
     id?: number
     userId: number
-    movieId: string
+    movieId: number
     createdAt?: Date | string
   }
 
   export type BookmarkUpdateManyMutationInput = {
-    movieId?: StringFieldUpdateOperationsInput | string
+    movieId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type BookmarkUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
-    movieId?: StringFieldUpdateOperationsInput | string
+    movieId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -4871,7 +4875,7 @@ export namespace Prisma {
 
   export type BookmarkUserIdMovieIdCompoundUniqueInput = {
     userId: number
-    movieId: string
+    movieId: number
   }
 
   export type BookmarkCountOrderByAggregateInput = {
@@ -4884,6 +4888,7 @@ export namespace Prisma {
   export type BookmarkAvgOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    movieId?: SortOrder
   }
 
   export type BookmarkMaxOrderByAggregateInput = {
@@ -4903,6 +4908,7 @@ export namespace Prisma {
   export type BookmarkSumOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    movieId?: SortOrder
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -5072,13 +5078,13 @@ export namespace Prisma {
   }
 
   export type BookmarkCreateWithoutUserInput = {
-    movieId: string
+    movieId: number
     createdAt?: Date | string
   }
 
   export type BookmarkUncheckedCreateWithoutUserInput = {
     id?: number
-    movieId: string
+    movieId: number
     createdAt?: Date | string
   }
 
@@ -5114,7 +5120,7 @@ export namespace Prisma {
     NOT?: BookmarkScalarWhereInput | BookmarkScalarWhereInput[]
     id?: IntFilter<"Bookmark"> | number
     userId?: IntFilter<"Bookmark"> | number
-    movieId?: StringFilter<"Bookmark"> | string
+    movieId?: IntFilter<"Bookmark"> | number
     createdAt?: DateTimeFilter<"Bookmark"> | Date | string
   }
 
@@ -5166,24 +5172,24 @@ export namespace Prisma {
 
   export type BookmarkCreateManyUserInput = {
     id?: number
-    movieId: string
+    movieId: number
     createdAt?: Date | string
   }
 
   export type BookmarkUpdateWithoutUserInput = {
-    movieId?: StringFieldUpdateOperationsInput | string
+    movieId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type BookmarkUncheckedUpdateWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
-    movieId?: StringFieldUpdateOperationsInput | string
+    movieId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type BookmarkUncheckedUpdateManyWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
-    movieId?: StringFieldUpdateOperationsInput | string
+    movieId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
