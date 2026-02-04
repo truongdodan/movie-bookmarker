@@ -30,7 +30,7 @@ export default async function RootLayout({
         <body>
           <Navbar />
           <main className="min-h-screen">
-            <div className="mx-auto max-w-7xl px-4 py-6">
+            <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
               <TRPCReactProvider>{children}</TRPCReactProvider>
             </div>
           </main>

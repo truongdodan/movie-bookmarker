@@ -1,5 +1,6 @@
 import z from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { fetchMovieDetails } from "~/server/tmdb";
 
 export const bookmarkRouter = createTRPCRouter({
     add: protectedProcedure
@@ -35,5 +36,31 @@ export const bookmarkRouter = createTRPCRouter({
             });
 
             return Boolean(bookmark);
+        }),
+
+    watchlist: protectedProcedure
+        .query(async ({ctx}) => {
+            const bookmarkList = await ctx.db.bookmark.findMany({
+                where: {
+                    userId: parseInt(ctx!.session!.user!.id), //TODO: fix type
+                }
+            });
+
+            const watchlist = await Promise.all(
+                bookmarkList.map(async (bookmark) => {
+                    const movie = await fetchMovieDetails(String(bookmark.movieId));
+
+                    return {
+                        id: movie.id,
+                        title: movie.title,
+                        posterPath: movie.poster_path,
+                        releaseDate: movie.release_date,
+                        rating: movie.vote_average,
+                        overview: movie.overview
+                    };
+                })
+            );
+
+            return watchlist.filter(Boolean);
         })
 });
