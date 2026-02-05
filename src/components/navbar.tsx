@@ -1,11 +1,14 @@
 import { Button } from "~/components/ui/button";
 import { Logo } from "~/components/logo";
-import { NavMenu } from "~/components/nav-menu";
-import { NavigationSheet } from "~/components/navigation-sheet";
-import {Popcorn} from "lucide-react"
 import Link from "next/link";
 import { getServerAuthSession } from "~/server/auth-session";
 import { Bookmark } from "lucide-react";
+import { SearchBar } from "./search-bar";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "~/components/ui/tooltip"
 
 const Navbar = async () => {
     const session = await getServerAuthSession();
@@ -22,6 +25,7 @@ const Navbar = async () => {
         </Link>
 
         <div className="flex items-center gap-3">
+          <SearchBar />
           {!session?.user 
               ? <>
                   <Link href="/login">
@@ -35,8 +39,14 @@ const Navbar = async () => {
                   href="/watchlist"
                   className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
                 >
-                  <Bookmark className="h-4 w-4" />
-                  My Watchlist
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Bookmark className="h-4 w-4" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>My Watchlist</p>
+                    </TooltipContent>
+                  </Tooltip>
                 </Link>
           }
           {/* <Button size="icon" variant="outline">

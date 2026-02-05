@@ -1,6 +1,6 @@
 import z from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { fetchMovieDetails, fetchPopularMovies } from "~/server/tmdb";
+import { fetchMovieByTitle, fetchMovieDetails, fetchPopularMovies } from "~/server/tmdb";
 
 export const movieRouter = createTRPCRouter({
     popular: publicProcedure.query(async () => {
@@ -32,4 +32,31 @@ export const movieRouter = createTRPCRouter({
                 overview: movie.overview
             };
     }),
+
+    search: publicProcedure
+        .input(z.object({title: z.string()}))
+        .query(async ({input}) => {
+            const res = await fetchMovieByTitle(input.title);
+
+            const results = res.results
+            .filter((show: any) => {
+                if (!show) return false;
+                if (show.media_type === "person") return false;
+                if (!show.poster_path) return false;
+
+                return true;
+            })
+            .map((show: any) => ({
+                id: show.id,
+                title: show.name ?? show.title,
+                posterPath: show.poster_path,
+                releaseDate: show.release_date ?? show.first_air_date ?? "",
+                overview: show.overview ?? ""
+            }))
+
+            return {
+                ...res,
+                results,
+            }
+        })
 });

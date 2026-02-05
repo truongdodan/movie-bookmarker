@@ -7,6 +7,7 @@ import { TRPCReactProvider } from "~/trpc/react";
 import Navbar from "~/components/navbar";
 import { Provider } from "./provider";
 import { getServerAuthSession } from "~/server/auth-session";
+import { TooltipProvider } from "~/components/ui/tooltip";
 
 export const metadata: Metadata = {
   title: "Popcorn",
@@ -28,10 +29,14 @@ export default async function RootLayout({
     <html lang="en" className={`${geist.variable}`}>
       <Provider session={session}>
         <body>
-          <Navbar />
+          <TooltipProvider>
+            <Navbar />
+          </TooltipProvider>
           <main className="min-h-screen">
             <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
-              <TRPCReactProvider>{children}</TRPCReactProvider>
+              <TRPCReactProvider>
+                {children}
+              </TRPCReactProvider>
             </div>
           </main>
         </body>

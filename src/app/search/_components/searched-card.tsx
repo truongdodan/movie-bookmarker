@@ -4,17 +4,15 @@ import Link from "next/link"
 import { Badge } from "~/components/ui/badge";
 import { X } from "lucide-react";
 
-type WatchlistCardProps = {
+type SearchedCardProps = {
     id: string,
     title: string,
     posterPath: string | null,
-    rating: number,
     releaseDate: string,
     overview: string,
-    onRemove: () => void;
 }
 
-export function WatchlistCard({id, title, posterPath, rating, releaseDate, overview, onRemove}: WatchlistCardProps) {
+export function SearchedCard({id, title, posterPath, releaseDate, overview}: SearchedCardProps) {
     return (
     <Card className="flex flex-row gap-6 overflow-hidden p-0">
       {/* Poster - Left */}
@@ -35,7 +33,6 @@ export function WatchlistCard({id, title, posterPath, rating, releaseDate, overv
       {/* Details - Right */}
       <div className="flex-1 py-4">
         <div className="flex items-center gap-3 mb-2">
-          <Badge className="rounded-full h-10 w-10 flex items-center justify-center text-sm font-bold">{rating.toFixed(1)}</Badge>
           <div>
             <Link href={`/movie/${id}`}>
               <CardTitle className="hover:underline text-lg">{title}</CardTitle>
@@ -43,17 +40,9 @@ export function WatchlistCard({id, title, posterPath, rating, releaseDate, overv
             <CardDescription>{releaseDate}</CardDescription>
           </div>
         </div>
-        <p className="text-sm text-gray-700 mb-3">{overview}</p>
-
-        {/* Actions */}
-        <Button 
-            size="icon" 
-            variant="outline"
-            className="rounded-full" 
-            onClick={onRemove}
-            >
-            <X size={20} className="text-gray-400 stroke-[3]"/>
-        </Button>
+        <p className="text-sm text-gray-700 mb-3 line-clamp-3">
+          {overview}
+        </p>
       </div>
     </Card>
   );
