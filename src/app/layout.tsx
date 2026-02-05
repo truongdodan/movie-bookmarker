@@ -11,7 +11,7 @@ import { getServerAuthSession } from "~/server/auth-session";
 export const metadata: Metadata = {
   title: "Popcorn",
   description: "Bookmark movies. Watch later.",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: [{ rel: "icon", url: "/popcorn.svg" }],
 };
 
 const geist = Geist({
