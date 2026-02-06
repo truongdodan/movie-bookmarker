@@ -2,15 +2,12 @@
 
 import { api } from "~/trpc/react";
 import { SignupForm } from "./_components/signup-form";
+import type { SignupInput } from "~/lib/validators/auth";
 
 export default function Page() {
   const register = api.auth.register.useMutation();
 
-  async function handleSignup(data: {
-    email: string;
-    username: string;
-    password: string;
-  }) {
+  async function handleSignup(data: SignupInput) {
     await register.mutateAsync(data);
   }
 

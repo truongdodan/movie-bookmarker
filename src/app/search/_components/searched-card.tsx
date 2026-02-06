@@ -1,21 +1,8 @@
-import { Button } from "~/components/ui/button";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
+import { Card, CardDescription, CardTitle } from "~/components/ui/card";
 import Link from "next/link";
-import { Badge } from "~/components/ui/badge";
-import { X } from "lucide-react";
+import type { Movie } from "~/types/movie";
 
-type SearchedCardProps = {
-  id: string;
-  title: string;
-  posterPath: string | null;
-  releaseDate: string;
-  overview: string;
-};
+type SearchedCardProps = Movie;
 
 export function SearchedCard({
   id,

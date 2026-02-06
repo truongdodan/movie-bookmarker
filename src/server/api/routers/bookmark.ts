@@ -14,7 +14,7 @@ export const bookmarkRouter = createTRPCRouter({
             movieId: input.id,
           },
         });
-      } catch (error: any) {
+      } catch (error) {
         if (error.code === "P2002") {
           throw new TRPCError({
             code: "CONFLICT",
@@ -39,7 +39,7 @@ export const bookmarkRouter = createTRPCRouter({
             movieId: input.id,
           },
         });
-      } catch (error: any) {
+      } catch (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Failed to remove bookmark",

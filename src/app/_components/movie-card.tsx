@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Badge } from "~/components/ui/badge";
 import {
   Card,
@@ -6,30 +7,28 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
+import type { Movie } from "~/types/movie";
 
-type MovieCardProps = {
-  title: string;
-  posterPath: string | null;
-  rating: number;
-  releaseDate: string;
-  onClick: () => void;
-};
+type MovieCardProps = Movie;
 
 export function MovieCard({
+  id,
   title,
   posterPath,
   rating,
   releaseDate,
-  onClick,
 }: MovieCardProps) {
   return (
     <Card className="relative mx-auto w-full max-w-sm cursor-pointer overflow-hidden pt-0 transition hover:-translate-y-1 hover:shadow-lg">
       <div className="absolute inset-0 z-30 aspect-video" />
-      <img
-        src={`https://image.tmdb.org/t/p/w500${posterPath}`}
-        alt="Movie poster"
-        className="relative z-20 w-full object-cover"
-      />
+      <Link href={`/movie/${id}`} className="block" key={id}>
+        <img
+          src={`https://image.tmdb.org/t/p/w500${posterPath}`}
+          alt="Movie poster"
+          className="relative z-20 w-full object-cover"
+        />
+      </Link>
+
       <CardHeader>
         <CardAction>
           <Badge variant="secondary">{rating.toFixed(1)}</Badge>
@@ -37,9 +36,6 @@ export function MovieCard({
         <CardTitle>{title}</CardTitle>
         <CardDescription>{releaseDate}</CardDescription>
       </CardHeader>
-      {/* <CardFooter>
-        <Button className="w-full">View Event</Button>
-      </CardFooter> */}
     </Card>
   );
 }

@@ -2,7 +2,7 @@
 
 import { api } from "~/trpc/react";
 import { MovieCard } from "./movie-card";
-import Link from "next/link";
+import type { Movie } from "~/types/movie";
 
 export function MovieList() {
   const { data, isLoading, error } = api.movie.popular.useQuery();
@@ -15,10 +15,8 @@ export function MovieList() {
       <h1 className="mb-4 text-2xl font-semibold">Popular Movies</h1>
 
       <ul className="grid grid-cols-2 gap-6 md:grid-cols-5">
-        {data?.results?.map((movie: any) => (
-          <Link href={`/movie/${movie.id}`} className="block" key={movie.id}>
-            <MovieCard {...movie} />
-          </Link>
+        {data.results.map((movie: Movie) => (
+          <MovieCard {...movie} key={movie.id} />
         ))}
       </ul>
     </>

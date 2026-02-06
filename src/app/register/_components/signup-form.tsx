@@ -18,11 +18,7 @@ import { Input } from "~/components/ui/input";
 import { signupSchema, type SignupInput } from "~/lib/validators/auth";
 
 type Props = {
-  onSubmit: (data: {
-    email: string;
-    username: string;
-    password: string;
-  }) => Promise<void>;
+  onSubmit: (data: SignupInput) => Promise<void>;
   error?: string | null;
   isLoading?: boolean;
 } & React.ComponentProps<typeof Card>;
@@ -36,7 +32,7 @@ export function SignupForm({ onSubmit, error, isLoading, ...props }: Props) {
   });
   const [fieldErrors, setFieldErrors] = useState<Partial<SignupInput>>({});
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const result = signupSchema.safeParse(form);
@@ -55,7 +51,7 @@ export function SignupForm({ onSubmit, error, isLoading, ...props }: Props) {
 
     setFieldErrors({});
 
-    onSubmit({
+    await onSubmit({
       email: form.email,
       username: form.username,
       password: form.password,
