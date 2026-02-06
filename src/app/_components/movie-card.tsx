@@ -1,29 +1,29 @@
-
-import { Badge } from "~/components/ui/badge"
+import { Badge } from "~/components/ui/badge";
 import {
   Card,
   CardAction,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "~/components/ui/card"
+} from "~/components/ui/card";
 
 type MovieCardProps = {
-    title: string,
-    posterPath: string | null;
-    rating: number;
-    releaseDate: string;
-    onClick: () => void;
-}
+  title: string;
+  posterPath: string | null;
+  rating: number;
+  releaseDate: string;
+  onClick: () => void;
+};
 
-export function MovieCard({title, posterPath, rating, releaseDate, onClick}: MovieCardProps) {
+export function MovieCard({
+  title,
+  posterPath,
+  rating,
+  releaseDate,
+  onClick,
+}: MovieCardProps) {
   return (
-    <Card className="relative mx-auto w-full max-w-sm overflow-hidden pt-0
-    cursor-pointer
-    transition
-    hover:-translate-y-1
-    hover:shadow-lg"
-    >
+    <Card className="relative mx-auto w-full max-w-sm cursor-pointer overflow-hidden pt-0 transition hover:-translate-y-1 hover:shadow-lg">
       <div className="absolute inset-0 z-30 aspect-video" />
       <img
         src={`https://image.tmdb.org/t/p/w500${posterPath}`}
@@ -35,13 +35,11 @@ export function MovieCard({title, posterPath, rating, releaseDate, onClick}: Mov
           <Badge variant="secondary">{rating.toFixed(1)}</Badge>
         </CardAction>
         <CardTitle>{title}</CardTitle>
-        <CardDescription>
-          {releaseDate}
-        </CardDescription>
+        <CardDescription>{releaseDate}</CardDescription>
       </CardHeader>
       {/* <CardFooter>
         <Button className="w-full">View Event</Button>
       </CardFooter> */}
     </Card>
-  )
+  );
 }

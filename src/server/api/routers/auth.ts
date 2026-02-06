@@ -6,36 +6,39 @@ import { TRPCError } from "@trpc/server";
 
 export const authRouter = createTRPCRouter({
   register: publicProcedure
-    .input(z.object({ 
-        email: z.string().email(), 
-        username: z.string().min(3).max(20), 
-        password: z.string()
-                    .min(8)
-                    .regex(/[a-z]/, "Password must contain at least one lowercase letter")
-                    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-                    .regex(/[0-9]/, "Password must contain at least one number")
-                    .regex(/[^a-zA-Z0-9]/, "Password must contain at least one special character") 
-    }))
+    .input(
+      z.object({
+        email: z.string().email(),
+        username: z.string().min(3).max(20),
+        password: z
+          .string()
+          .min(8)
+          .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+          .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+          .regex(/[0-9]/, "Password must contain at least one number")
+          .regex(
+            /[^a-zA-Z0-9]/,
+            "Password must contain at least one special character",
+          ),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
-        const exists = await ctx.db.user.findFirst({
-            where: {
-                OR: [
-                    { email: input.email },
-                    { username: input.username }
-                ]
-            }
+      const exists = await ctx.db.user.findFirst({
+        where: {
+          OR: [{ email: input.email }, { username: input.username }],
+        },
+      });
+
+      if (exists) {
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: "User already exists",
         });
+      }
 
-        if (exists) {
-            throw new TRPCError({
-              code: "CONFLICT",
-              message: "User already exists",
-            });
-        }
+      const hashedPassword = await bcrypt.hash(input.password, 10);
 
-        const hashedPassword = await bcrypt.hash(input.password, 10);
-
-        await ctx.db.user.create({
+      await ctx.db.user.create({
         data: {
           email: input.email,
           username: input.username,
@@ -43,6 +46,6 @@ export const authRouter = createTRPCRouter({
         },
       });
 
-      return {success: true}
+      return { success: true };
     }),
 });

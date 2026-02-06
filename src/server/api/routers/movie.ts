@@ -1,62 +1,88 @@
+import { TRPCError } from "@trpc/server";
 import z from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { fetchMovieByTitle, fetchMovieDetails, fetchPopularMovies } from "~/server/tmdb";
+import {
+  fetchMovieByTitle,
+  fetchMovieDetails,
+  fetchPopularMovies,
+} from "~/server/tmdb";
 
 export const movieRouter = createTRPCRouter({
-    popular: publicProcedure.query(async () => {
-        const res = await fetchPopularMovies();
+  popular: publicProcedure.query(async () => {
+    try {
+      const res = await fetchPopularMovies();
+
+      return {
+        ...res,
+        results: res.results.map((movie: any) => ({
+          id: movie.id,
+          title: movie.title,
+          posterPath: movie.poster_path,
+          releaseDate: movie.release_date,
+          rating: movie.vote_average,
+        })),
+      };
+    } catch (error: any) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Failed to get Popular Movies",
+      });
+    }
+  }),
+
+  details: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ input }) => {
+      try {
+        const movie = await fetchMovieDetails(input.id);
 
         return {
-            ...res,
-            results: res.results.map((movie: any) => ({
-                        id: movie.id,
-                        title: movie.title,
-                        posterPath: movie.poster_path,
-                        releaseDate: movie.release_date,
-                        rating: movie.vote_average
-            }))
-        }
+          id: movie.id,
+          title: movie.title,
+          posterPath: movie.poster_path,
+          releaseDate: movie.release_date,
+          rating: movie.vote_average,
+          overview: movie.overview,
+        };
+      } catch (error: any) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to get movie details",
+        });
+      }
     }),
 
-    details: publicProcedure
-        .input(z.object({id: z.string()}))
-        .query(async ({input}) => {
-            const movie = await fetchMovieDetails(input.id);
+  search: publicProcedure
+    .input(z.object({ title: z.string() }))
+    .query(async ({ input }) => {
+      try {
+        const res = await fetchMovieByTitle(input.title);
 
-            return {
-                id: movie.id,
-                title: movie.title,
-                posterPath: movie.poster_path,
-                releaseDate: movie.release_date,
-                rating: movie.vote_average,
-                overview: movie.overview
-            };
+        const results = res.results
+          .filter((show: any) => {
+            if (!show) return false;
+            if (show.media_type === "person") return false;
+            if (!show.poster_path) return false;
+
+            return true;
+          })
+          .map((show: any) => ({
+            id: show.id,
+            title: show.name ?? show.title,
+            posterPath: show.poster_path,
+            releaseDate: show.release_date ?? show.first_air_date ?? "",
+            overview: show.overview ?? "",
+          }));
+
+        return {
+          ...res,
+          results,
+        };
+      } catch (error: any) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to get search result",
+        });
+      }
     }),
-
-    search: publicProcedure
-        .input(z.object({title: z.string()}))
-        .query(async ({input}) => {
-            const res = await fetchMovieByTitle(input.title);
-
-            const results = res.results
-            .filter((show: any) => {
-                if (!show) return false;
-                if (show.media_type === "person") return false;
-                if (!show.poster_path) return false;
-
-                return true;
-            })
-            .map((show: any) => ({
-                id: show.id,
-                title: show.name ?? show.title,
-                posterPath: show.poster_path,
-                releaseDate: show.release_date ?? show.first_air_date ?? "",
-                overview: show.overview ?? ""
-            }))
-
-            return {
-                ...res,
-                results,
-            }
-        })
 });

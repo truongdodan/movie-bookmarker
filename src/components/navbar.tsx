@@ -8,47 +8,50 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "~/components/ui/tooltip"
+} from "~/components/ui/tooltip";
 
 const Navbar = async () => {
-    const session = await getServerAuthSession();
+  const session = await getServerAuthSession();
 
-    return (
-    <nav className="h-16 border-b bg-background">
+  return (
+    <nav className="bg-background h-16 border-b">
       <div className="mx-auto flex h-full max-w-(--breakpoint-xl) items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/">
           <div className="flex items-center gap-1">
-          <Logo />
-          {/* Desktop Menu */}
-          {/* <NavMenu className="hidden md:block" /> */}
-        </div>
+            <Logo />
+            {/* Desktop Menu */}
+            {/* <NavMenu className="hidden md:block" /> */}
+          </div>
         </Link>
 
         <div className="flex items-center gap-3">
           <SearchBar />
-          {!session?.user 
-              ? <>
-                  <Link href="/login">
-                  <Button className="hidden sm:inline-flex" variant="outline">
-                    Sign In
-                  </Button>
-                  </Link>
-                  <Link href="/register"><Button>Sign Up</Button></Link>
-                </>
-              : <Link
-                  href="/watchlist"
-                  className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-                >
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <Bookmark className="h-4 w-4" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>My Watchlist</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </Link>
-          }
+          {!session?.user ? (
+            <>
+              <Link href="/login">
+                <Button className="hidden sm:inline-flex" variant="outline">
+                  Sign In
+                </Button>
+              </Link>
+              <Link href="/register">
+                <Button>Sign Up</Button>
+              </Link>
+            </>
+          ) : (
+            <Link
+              href="/watchlist"
+              className="text-foreground hover:bg-accent flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors"
+            >
+              <Tooltip>
+                <TooltipTrigger>
+                  <Bookmark className="h-4 w-4" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>My Watchlist</p>
+                </TooltipContent>
+              </Tooltip>
+            </Link>
+          )}
           {/* <Button size="icon" variant="outline">
             <SunIcon />
           </Button> */}

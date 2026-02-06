@@ -1,38 +1,38 @@
-import Link from "next/link"
-import { useState } from "react"
-import { Button } from "~/components/ui/button"
+import Link from "next/link";
+import { useState } from "react";
+import { Button } from "~/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "~/components/ui/card"
+} from "~/components/ui/card";
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "~/components/ui/field"
-import { Input } from "~/components/ui/input"
-import { signupSchema, type SignupInput } from "~/lib/validators/auth"
+} from "~/components/ui/field";
+import { Input } from "~/components/ui/input";
+import { signupSchema, type SignupInput } from "~/lib/validators/auth";
 
 type Props = {
   onSubmit: (data: {
-    email: string,
-    username: string,
-    password: string,
-  }) => Promise<void>,
-  error?: string | null,
-  isLoading?: boolean,
-} & React.ComponentProps<typeof Card>
+    email: string;
+    username: string;
+    password: string;
+  }) => Promise<void>;
+  error?: string | null;
+  isLoading?: boolean;
+} & React.ComponentProps<typeof Card>;
 
 export function SignupForm({ onSubmit, error, isLoading, ...props }: Props) {
   const [form, setForm] = useState<SignupInput>({
-    email: '',
-    username: '',
-    password: '',
-    confirmPassword: '',
+    email: "",
+    username: "",
+    password: "",
+    confirmPassword: "",
   });
   const [fieldErrors, setFieldErrors] = useState<Partial<SignupInput>>({});
 
@@ -64,14 +64,12 @@ export function SignupForm({ onSubmit, error, isLoading, ...props }: Props) {
     if (error || isLoading) return;
 
     setForm({
-      email: '',
-      username: '',
-      password: '',
-      confirmPassword: '',
+      email: "",
+      username: "",
+      password: "",
+      confirmPassword: "",
     });
-
   }
-
 
   return (
     <Card {...props}>
@@ -93,7 +91,7 @@ export function SignupForm({ onSubmit, error, isLoading, ...props }: Props) {
                   setForm((f) => ({
                     ...f,
                     email: e.target.value,
-                  }))
+                  }));
                 }}
                 required
                 disabled={isLoading}
@@ -105,15 +103,15 @@ export function SignupForm({ onSubmit, error, isLoading, ...props }: Props) {
             </Field>
             <Field>
               <FieldLabel htmlFor="username">Username</FieldLabel>
-              <Input 
+              <Input
                 type="text"
                 value={form.username}
-                onChange={(e) => (
+                onChange={(e) =>
                   setForm((f) => ({
-                    ...f, 
-                    username: e.target.value
+                    ...f,
+                    username: e.target.value,
                   }))
-                )}  
+                }
                 required
                 disabled={isLoading}
               />
@@ -125,15 +123,15 @@ export function SignupForm({ onSubmit, error, isLoading, ...props }: Props) {
             </Field>
             <Field>
               <FieldLabel htmlFor="password">Password</FieldLabel>
-              <Input 
+              <Input
                 type="password"
                 value={form.password}
-                onChange={(e) => (
+                onChange={(e) =>
                   setForm((f) => ({
-                    ...f, 
-                    password: e.target.value
+                    ...f,
+                    password: e.target.value,
                   }))
-                )}  
+                }
                 required
                 disabled={isLoading}
               />
@@ -147,15 +145,15 @@ export function SignupForm({ onSubmit, error, isLoading, ...props }: Props) {
               <FieldLabel htmlFor="confirm-password">
                 Confirm Password
               </FieldLabel>
-              <Input 
+              <Input
                 type="password"
                 value={form.confirmPassword}
-                onChange={(e) => (
+                onChange={(e) =>
                   setForm((f) => ({
-                    ...f, 
-                    confirmPassword: e.target.value
+                    ...f,
+                    confirmPassword: e.target.value,
                   }))
-                )}  
+                }
                 required
                 disabled={isLoading}
               />
@@ -167,17 +165,22 @@ export function SignupForm({ onSubmit, error, isLoading, ...props }: Props) {
             </Field>
             <FieldGroup>
               {error && (
-                <FieldDescription className="text-red-500">{error}</FieldDescription>
+                <FieldDescription className="text-red-500">
+                  {error}
+                </FieldDescription>
               )}
               <Field>
                 <Button type="submit">
-                  {isLoading ? 'Signing up...' : 'Sign up'}
+                  {isLoading ? "Signing up..." : "Sign up"}
                 </Button>
                 {/* <Button variant="outline" type="button">
                   Sign up with Google
                 </Button> */}
                 <FieldDescription className="px-6 text-center">
-                  Already have an account? <Link href="/login" className="underline">Login</Link>
+                  Already have an account?{" "}
+                  <Link href="/login" className="underline">
+                    Login
+                  </Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>
@@ -185,5 +188,5 @@ export function SignupForm({ onSubmit, error, isLoading, ...props }: Props) {
         </form>
       </CardContent>
     </Card>
-  )
+  );
 }

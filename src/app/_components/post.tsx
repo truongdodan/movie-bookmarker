@@ -45,7 +45,11 @@ export function LatestPost() {
         >
           {createPost.isPending ? "Submitting..." : "Submit"}
         </button> */}
-        <Button type="submit" disabled={createPost.isPending} className="rounded-full bg-gray-700 hover:bg-white/20">
+        <Button
+          type="submit"
+          disabled={createPost.isPending}
+          className="rounded-full bg-gray-700 hover:bg-white/20"
+        >
           {createPost.isPending ? "Submitting..." : "Submit"}
         </Button>
       </form>

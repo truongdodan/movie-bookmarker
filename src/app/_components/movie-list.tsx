@@ -1,26 +1,26 @@
-"use client"
+"use client";
 
 import { api } from "~/trpc/react";
 import { MovieCard } from "./movie-card";
 import Link from "next/link";
 
 export function MovieList() {
-    const {data, isLoading, error} = api.movie.popular.useQuery();
+  const { data, isLoading, error } = api.movie.popular.useQuery();
 
-    if (isLoading) return <h1>Loading movie...</h1>
-    if (error) return <h1>Failed to load error: {error.message}</h1>
+  if (isLoading) return <h1>Loading movie...</h1>;
+  if (error) return <h1>Failed to load error: {error.message}</h1>;
 
-    return (
-        <>
-            <h1 className="mb-4 text-2xl font-semibold">Popular Movies</h1>
-            
-            <ul className="grid grid-cols-2 md:grid-cols-5 gap-6">
-                {data?.results?.map((movie: any) => (
-                    <Link href={`/movie/${movie.id}`} className="block" key={movie.id}>
-                        <MovieCard {...movie} />
-                    </Link>
-                ))}
-            </ul>
-        </>
-    );
+  return (
+    <>
+      <h1 className="mb-4 text-2xl font-semibold">Popular Movies</h1>
+
+      <ul className="grid grid-cols-2 gap-6 md:grid-cols-5">
+        {data?.results?.map((movie: any) => (
+          <Link href={`/movie/${movie.id}`} className="block" key={movie.id}>
+            <MovieCard {...movie} />
+          </Link>
+        ))}
+      </ul>
+    </>
+  );
 }
