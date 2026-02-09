@@ -7,20 +7,16 @@ export const bookmarkRouter = createTRPCRouter({
   add: protectedProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ ctx, input }) => {
+      const userId = Number(ctx.session?.user.id);
       try {
         return ctx.db.bookmark.create({
           data: {
-            userId: parseInt(ctx.session.user.id), //TODO: fix type
+            userId: userId,
             movieId: input.id,
           },
         });
-      } catch (error) {
-        if (error.code === "P2002") {
-          throw new TRPCError({
-            code: "CONFLICT",
-            message: "Movie already in watchlist",
-          });
-        }
+      } catch (error) { 
+        console.error("Error: ", error);
 
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
@@ -33,13 +29,15 @@ export const bookmarkRouter = createTRPCRouter({
     .input(z.object({ id: z.number() }))
     .mutation(async ({ ctx, input }) => {
       try {
+        const userId = Number(ctx.session?.user.id);
+
         return ctx.db.bookmark.deleteMany({
           where: {
-            userId: parseInt(ctx.session!.user.id), //TODO: fix type
+            userId: userId, //TODO: fix type
             movieId: input.id,
           },
         });
-      } catch (error) {
+      } catch {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Failed to remove bookmark",
@@ -51,15 +49,17 @@ export const bookmarkRouter = createTRPCRouter({
     .input(z.object({ id: z.number() }))
     .query(async ({ ctx, input }) => {
       try {
+        const userId = Number(ctx.session?.user.id);
+
         const bookmark = await ctx.db.bookmark.findFirst({
           where: {
-            userId: parseInt(ctx.session.user.id), //TODO: fix type
+            userId: userId,
             movieId: input.id,
           },
         });
 
         return Boolean(bookmark);
-      } catch (error: any) {
+      } catch {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Failed to check bookmark",
@@ -69,9 +69,11 @@ export const bookmarkRouter = createTRPCRouter({
 
   watchlist: protectedProcedure.query(async ({ ctx }) => {
     try {
+      const userId = Number(ctx.session?.user.id);
+
       const bookmarkList = await ctx.db.bookmark.findMany({
         where: {
-          userId: parseInt(ctx.session.user.id), //TODO: fix type
+          userId: userId,
         },
       });
 
@@ -91,7 +93,7 @@ export const bookmarkRouter = createTRPCRouter({
       );
 
       return watchlist.filter(Boolean);
-    } catch (error) {
+    } catch {
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
         message: "Failed to get Watchlist",
