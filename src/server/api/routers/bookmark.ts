@@ -10,7 +10,7 @@ export const bookmarkRouter = createTRPCRouter({
       try {
         return ctx.db.bookmark.create({
           data: {
-            userId: parseInt(ctx.session!.user!.id), //TODO: fix type
+            userId: parseInt(ctx.session.user.id), //TODO: fix type
             movieId: input.id,
           },
         });
@@ -35,7 +35,7 @@ export const bookmarkRouter = createTRPCRouter({
       try {
         return ctx.db.bookmark.deleteMany({
           where: {
-            userId: parseInt(ctx.session!.user!.id), //TODO: fix type
+            userId: parseInt(ctx.session!.user.id), //TODO: fix type
             movieId: input.id,
           },
         });
@@ -53,7 +53,7 @@ export const bookmarkRouter = createTRPCRouter({
       try {
         const bookmark = await ctx.db.bookmark.findFirst({
           where: {
-            userId: parseInt(ctx.session!.user!.id), //TODO: fix type
+            userId: parseInt(ctx.session.user.id), //TODO: fix type
             movieId: input.id,
           },
         });
@@ -71,7 +71,7 @@ export const bookmarkRouter = createTRPCRouter({
     try {
       const bookmarkList = await ctx.db.bookmark.findMany({
         where: {
-          userId: parseInt(ctx.session!.user!.id), //TODO: fix type
+          userId: parseInt(ctx.session.user.id), //TODO: fix type
         },
       });
 
@@ -91,7 +91,7 @@ export const bookmarkRouter = createTRPCRouter({
       );
 
       return watchlist.filter(Boolean);
-    } catch (error: any) {
+    } catch (error) {
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
         message: "Failed to get Watchlist",
