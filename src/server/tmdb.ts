@@ -1,6 +1,7 @@
 import { env } from "~/env";
+import type { Movie } from "~/types/movie";
 
-export async function fetchPopularMovies() {
+export async function fetchPopularMovies(): Promise<Movie[]> {
   const url =
     "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1";
   const options = {
@@ -17,10 +18,10 @@ export async function fetchPopularMovies() {
     throw new Error("Failed to fetch movie data");
   }
 
-  return res.json(); //TODO: fix type
+  return (await res.json()) as Movie[];
 }
 
-export async function fetchMovieDetails(id: string) {
+export async function fetchMovieDetails(id: string): Promise<Movie> {
   const url = `https://api.themoviedb.org/3/movie/${id}?language=en-US`;
   const options = {
     method: "GET",
@@ -36,16 +37,16 @@ export async function fetchMovieDetails(id: string) {
     throw new Error("Failed to fetch movie data");
   }
 
-  return res.json();//TODO: fix type
+  return (await res.json()) as Movie;
 }
 
-export async function fetchMovieByTitle(title: string) {
+export async function fetchMovieByTitle(title: string): Promise<Movie[]> {
   const url = `https://api.themoviedb.org/3/search/multi?query=${title}&include_adult=true&language=en-US&page=1`;
   const options = {
     method: "GET",
     headers: {
       accept: "application/json",
-      Authorization: `Bearer ${process.env.TMDB_API_READ_ACCESS_TOKEN}`,
+      Authorization: `Bearer ${env.TMDB_API_READ_ACCESS_TOKEN}`,
     },
   };
 
@@ -55,5 +56,5 @@ export async function fetchMovieByTitle(title: string) {
     throw new Error("Failed to fetch movie data");
   }
 
-  return res.json();//TODO: fix type
+  return (await res.json()) as Movie[];
 }
