@@ -1,17 +1,19 @@
+"use client";
+
 import { Button } from "~/components/ui/button";
 import { Logo } from "~/components/logo";
 import Link from "next/link";
-import { getServerAuthSession } from "~/server/auth-session";
-import { Bookmark } from "lucide-react";
+import { Bookmark, LogOut } from "lucide-react";
 import { SearchBar } from "./search-bar";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "~/components/ui/tooltip";
+import { signOut, useSession } from "next-auth/react";
 
-const Navbar = async () => {
-  const session = await getServerAuthSession();
+const Navbar = () => {
+  const { status } = useSession();
 
   return (
     <nav className="bg-background h-16 border-b">
@@ -26,7 +28,7 @@ const Navbar = async () => {
 
         <div className="flex items-center gap-3">
           <SearchBar />
-          {!session?.user ? (
+          {status === "unauthenticated" ? (
             <>
               <Link href="/login">
                 <Button className="hidden sm:inline-flex" variant="outline">
@@ -38,27 +40,37 @@ const Navbar = async () => {
               </Link>
             </>
           ) : (
-            <Link
-              href="/watchlist"
-              className="text-foreground hover:bg-accent flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors"
-            >
-              <Tooltip>
-                <TooltipTrigger>
-                  <Bookmark className="h-4 w-4" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>My Watchlist</p>
-                </TooltipContent>
-              </Tooltip>
-            </Link>
+            <>
+              <Link
+                href="/watchlist"
+                className="text-foreground hover:bg-accent flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors"
+              >
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Bookmark className="h-4 w-4" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>My Watchlist</p>
+                  </TooltipContent>
+                </Tooltip>
+              </Link>
+              <div
+                className="text-foreground hover:bg-accent flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors"
+                onClick={() => {
+                  signOut();
+                }}
+              >
+                <Tooltip>
+                  <TooltipTrigger>
+                    <LogOut className="h-4 w-4" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Logout</p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
+            </>
           )}
-          {/* <Button size="icon" variant="outline">
-            <SunIcon />
-          </Button> */}
-
-          {/* Mobile Menu */}
-          {/* <div className="md:hidden">
-          </div> */}
         </div>
       </div>
     </nav>
