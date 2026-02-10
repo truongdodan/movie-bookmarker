@@ -3,26 +3,8 @@
  * for Docker builds.
  */
 import "./src/env.js";
-import { readdir } from "fs";
 
 /** @type {import("next").NextConfig} */
-const config = {
-  webpack: (config, { isServer }) => {
-    // Fix Windows permission issues with system directories
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-      };
-    }
-
-    config.watchOptions = {
-      ...config.watchOptions,
-      ignored: ["**/node_modules", "**/.git"],
-    };
-
-    return config;
-  },
-};
+const config = {};
 
 export default config;

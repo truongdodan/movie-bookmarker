@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import type { Movie } from "~/types/movie";
 import { WatchlistCard } from "./_components/watchlist-card";
 import { api } from "~/trpc/react";
 
@@ -8,13 +8,10 @@ export default function WatchlistPage() {
   const { data, isLoading, error } = api.bookmark.watchlist.useQuery();
   const utils = api.useUtils();
   const removeBookmark = api.bookmark.remove.useMutation({
-    onSuccess: () => {
-      utils.bookmark.watchlist.invalidate();
+    onSuccess: async () => {
+      await utils.bookmark.watchlist.invalidate();
     },
   });
-  const handleCardOnRemove = () => {
-    console.log("Remove bookmark");
-  };
 
   if (isLoading) return <h1>Loading watchlist...</h1>;
   if (error) return <h1>Failed to load watchlist: {error.message}</h1>;
@@ -25,7 +22,7 @@ export default function WatchlistPage() {
       <h1 className="mb-4 text-2xl font-semibold">Watchlist</h1>
 
       <ul className="grid grid-cols-1 gap-6 md:grid-cols-1">
-        {data.map((bookmark: any) => (
+        {data.map((bookmark: Movie) => (
           <WatchlistCard
             key={bookmark.id}
             {...bookmark}

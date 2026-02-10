@@ -24,7 +24,7 @@ export const movieRouter = createTRPCRouter({
           overview: movie.overview,
         })),
       };
-    } catch (error) {
+    } catch {
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
         message: "Failed to get Popular Movies",
@@ -46,7 +46,7 @@ export const movieRouter = createTRPCRouter({
           vote_average: movie.vote_average,
           overview: movie.overview,
         };
-      } catch (error) {
+      } catch {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Failed to get movie details",
