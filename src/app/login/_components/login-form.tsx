@@ -20,14 +20,14 @@ import Link from "next/link";
 import { useState } from "react";
 
 type Props = {
-  onSubmit: (data: { username: string; password: string }) => Promise<void>;
+  onLogin: (data: { username: string; password: string }) => Promise<void>;
   error?: string | null;
   isLoading?: boolean;
 } & React.ComponentProps<"div">;
 
 export function LoginForm({
   className,
-  onSubmit,
+  onLogin,
   error,
   isLoading,
   ...props
@@ -37,10 +37,10 @@ export function LoginForm({
     password: "",
   });
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    onSubmit({
+    await onLogin({
       username: form.username,
       password: form.password,
     });

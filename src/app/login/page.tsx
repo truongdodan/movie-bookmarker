@@ -33,7 +33,7 @@ export default function Page() {
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm">
-        <LoginForm onSubmit={handleLogin} error={error} isLoading={isLoading} />
+        <LoginForm onLogin={handleLogin} error={error} isLoading={isLoading} />
       </div>
     </div>
   );
