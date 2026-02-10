@@ -7,20 +7,20 @@ type SearchedCardProps = Movie;
 export function SearchedCard({
   id,
   title,
-  posterPath,
-  releaseDate,
+  poster_path,
+  release_date,
   overview,
 }: SearchedCardProps) {
   return (
     <Card className="flex flex-row gap-6 overflow-hidden p-0">
       {/* Poster - Left */}
-      {posterPath ? (
+      {poster_path ? (
         <Link
           href={`/movie/${id}`}
           className="flex h-full w-32 items-center justify-center rounded bg-gray-200 text-gray-400"
         >
           <img
-            src={`https://image.tmdb.org/t/p/w154${posterPath}`}
+            src={`https://image.tmdb.org/t/p/w154${poster_path}`}
             alt={title}
             className="h-full w-full object-cover"
           />
@@ -41,7 +41,7 @@ export function SearchedCard({
             <Link href={`/movie/${id}`}>
               <CardTitle className="text-lg hover:underline">{title}</CardTitle>
             </Link>
-            <CardDescription>{releaseDate}</CardDescription>
+            <CardDescription>{release_date}</CardDescription>
           </div>
         </div>
         <p className="mb-3 line-clamp-3 text-sm text-gray-700">{overview}</p>

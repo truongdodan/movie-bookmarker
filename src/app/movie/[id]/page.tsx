@@ -47,7 +47,7 @@ export default function MovieDetails() {
   if (error) return <h1>Failed to load error: {error.message}</h1>;
   if (!data) return <h1>There is no movie data.</h1>;
 
-  const { title, posterPath, rating, releaseDate, overview } = data;
+  const { title, poster_path, vote_average, release_date, overview } = data;
 
   return (
     <div>
@@ -55,7 +55,7 @@ export default function MovieDetails() {
         {/* Poster */}
         <div className="mx-auto w-full max-w-xs overflow-hidden rounded-xl shadow-lg md:mx-0 md:w-[280px] md:flex-none lg:w-[320px]">
           <img
-            src={`https://image.tmdb.org/t/p/w500${posterPath}`}
+            src={`https://image.tmdb.org/t/p/w500${poster_path}`}
             alt={title}
             className="w-full object-cover"
           />
@@ -68,7 +68,7 @@ export default function MovieDetails() {
             <h1 className="text-2xl leading-tight font-bold sm:text-3xl">
               {title}{" "}
               <span className="text-muted-foreground font-normal">
-                ({new Date(releaseDate).getFullYear()})
+                ({new Date(release_date).getFullYear()})
               </span>
             </h1>
           </header>
@@ -78,7 +78,7 @@ export default function MovieDetails() {
             {/* Rating */}
             <div className="flex items-center gap-3">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-900 text-sm font-semibold text-white">
-                {rating.toFixed(1)}
+                {vote_average.toFixed(1)}
               </div>
               <span className="text-sm font-medium">User Score</span>
             </div>

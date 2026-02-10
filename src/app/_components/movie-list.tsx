@@ -9,6 +9,7 @@ export function MovieList() {
 
   if (isLoading) return <h1>Loading movie...</h1>;
   if (error) return <h1>Failed to load error: {error.message}</h1>;
+  if (!data) return null;
 
   return (
     <>

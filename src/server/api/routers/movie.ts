@@ -6,6 +6,7 @@ import {
   fetchMovieDetails,
   fetchPopularMovies,
 } from "~/server/tmdb";
+import type { Movie } from "~/types/movie";
 
 export const movieRouter = createTRPCRouter({
   popular: publicProcedure.query(async () => {
@@ -14,15 +15,16 @@ export const movieRouter = createTRPCRouter({
 
       return {
         ...res,
-        results: res.results.map((movie: any) => ({
+        results: res.results.map((movie: Movie) => ({
           id: movie.id,
           title: movie.title,
-          posterPath: movie.poster_path,
-          releaseDate: movie.release_date,
-          rating: movie.vote_average,
+          poster_path: movie.poster_path,
+          release_date: movie.release_date,
+          vote_average: movie.vote_average,
+          overview: movie.overview,
         })),
       };
-    } catch (error: any) {
+    } catch (error) {
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
         message: "Failed to get Popular Movies",
@@ -34,17 +36,17 @@ export const movieRouter = createTRPCRouter({
     .input(z.object({ id: z.string() }))
     .query(async ({ input }) => {
       try {
-        const movie = await fetchMovieDetails(input.id);
+        const movie: Movie = await fetchMovieDetails(input.id);
 
         return {
           id: movie.id,
           title: movie.title,
-          posterPath: movie.poster_path,
-          releaseDate: movie.release_date,
-          rating: movie.vote_average,
+          poster_path: movie.poster_path,
+          release_date: movie.release_date,
+          vote_average: movie.vote_average,
           overview: movie.overview,
         };
-      } catch (error: any) {
+      } catch (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Failed to get movie details",
@@ -69,8 +71,9 @@ export const movieRouter = createTRPCRouter({
           .map((show: any) => ({
             id: show.id,
             title: show.name ?? show.title,
-            posterPath: show.poster_path,
-            releaseDate: show.release_date ?? show.first_air_date ?? "",
+            poster_path: show.poster_path,
+            release_date: show.release_date ?? show.first_air_date ?? "",
+            vote_average: show.vote_average ?? 0,
             overview: show.overview ?? "",
           }));
 
@@ -78,7 +81,7 @@ export const movieRouter = createTRPCRouter({
           ...res,
           results,
         };
-      } catch (error: any) {
+      } catch (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Failed to get search result",

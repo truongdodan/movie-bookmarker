@@ -18,12 +18,12 @@ import { Input } from "~/components/ui/input";
 import { signupSchema, type SignupInput } from "~/lib/validators/auth";
 
 type Props = {
-  onSubmit: (data: SignupInput) => Promise<void>;
+  onSignup: (data: SignupInput) => Promise<void>;
   error?: string | null;
   isLoading?: boolean;
 } & React.ComponentProps<typeof Card>;
 
-export function SignupForm({ onSubmit, error, isLoading, ...props }: Props) {
+export function SignupForm({ onSignup, error, isLoading, ...props }: Props) {
   const [form, setForm] = useState<SignupInput>({
     email: "",
     username: "",
@@ -51,11 +51,7 @@ export function SignupForm({ onSubmit, error, isLoading, ...props }: Props) {
 
     setFieldErrors({});
 
-    await onSubmit({
-      email: form.email,
-      username: form.username,
-      password: form.password,
-    });
+    await onSignup(result.data);
 
     if (error || isLoading) return;
 

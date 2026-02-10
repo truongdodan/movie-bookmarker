@@ -2,6 +2,7 @@ import z from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { fetchMovieDetails } from "~/server/tmdb";
 import { TRPCError } from "@trpc/server";
+import type { Movie } from "~/types/movie";
 
 export const bookmarkRouter = createTRPCRouter({
   add: protectedProcedure
@@ -15,7 +16,7 @@ export const bookmarkRouter = createTRPCRouter({
             movieId: input.id,
           },
         });
-      } catch (error) { 
+      } catch (error) {
         console.error("Error: ", error);
 
         throw new TRPCError({
@@ -79,14 +80,16 @@ export const bookmarkRouter = createTRPCRouter({
 
       const watchlist = await Promise.all(
         bookmarkList.map(async (bookmark) => {
-          const movie = await fetchMovieDetails(String(bookmark.movieId));
+          const movie: Movie = await fetchMovieDetails(
+            String(bookmark.movieId),
+          );
 
           return {
             id: movie.id,
             title: movie.title,
-            posterPath: movie.poster_path,
-            releaseDate: movie.release_date,
-            rating: movie.vote_average,
+            poster_path: movie.poster_path,
+            release_date: movie.release_date,
+            vote_average: movie.vote_average,
             overview: movie.overview,
           };
         }),

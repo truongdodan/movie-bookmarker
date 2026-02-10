@@ -3,20 +3,24 @@
  * for Docker builds.
  */
 import "./src/env.js";
+import { readdir } from "fs";
 
 /** @type {import("next").NextConfig} */
 const config = {
   webpack: (config, { isServer }) => {
-    // Ignore Windows system directories
+    // Fix Windows permission issues with system directories
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+      };
+    }
+
     config.watchOptions = {
       ...config.watchOptions,
-      ignored: [
-        "**/node_modules/**",
-        "**/.git/**",
-        "**/Application Data/**",
-        "**/AppData/**",
-      ],
+      ignored: ["**/node_modules", "**/.git"],
     };
+
     return config;
   },
 };

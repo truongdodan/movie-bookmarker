@@ -1,7 +1,7 @@
 import { env } from "~/env";
 import type { Movie } from "~/types/movie";
 
-export async function fetchPopularMovies(): Promise<Movie[]> {
+export async function fetchPopularMovies(): Promise<{ results: Movie[] }> {
   const url =
     "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1";
   const options = {
@@ -18,7 +18,7 @@ export async function fetchPopularMovies(): Promise<Movie[]> {
     throw new Error("Failed to fetch movie data");
   }
 
-  return (await res.json()) as Movie[];
+  return (await res.json()) as { results: Movie[] };
 }
 
 export async function fetchMovieDetails(id: string): Promise<Movie> {
@@ -40,7 +40,9 @@ export async function fetchMovieDetails(id: string): Promise<Movie> {
   return (await res.json()) as Movie;
 }
 
-export async function fetchMovieByTitle(title: string): Promise<Movie[]> {
+export async function fetchMovieByTitle(
+  title: string,
+): Promise<{ results: Movie[] }> {
   const url = `https://api.themoviedb.org/3/search/multi?query=${title}&include_adult=true&language=en-US&page=1`;
   const options = {
     method: "GET",
@@ -56,5 +58,5 @@ export async function fetchMovieByTitle(title: string): Promise<Movie[]> {
     throw new Error("Failed to fetch movie data");
   }
 
-  return (await res.json()) as Movie[];
+  return (await res.json()) as { results: Movie[] };
 }
