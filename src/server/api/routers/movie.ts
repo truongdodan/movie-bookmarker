@@ -60,15 +60,27 @@ export const movieRouter = createTRPCRouter({
       try {
         const res = await fetchMovieByTitle(input.title);
 
+        type TmdbSearchItem = {
+          id: number;
+          name?: string;
+          title?: string;
+          poster_path?: string | null;
+          release_date?: string;
+          first_air_date?: string;
+          vote_average?: number;
+          overview?: string;
+          media_type?: string;
+        };
+
         const results = res.results
-          .filter((show: any) => {
+          .filter((show: TmdbSearchItem) => {
             if (!show) return false;
             if (show.media_type === "person") return false;
             if (!show.poster_path) return false;
 
             return true;
           })
-          .map((show: any) => ({
+          .map((show: TmdbSearchItem) => ({
             id: show.id,
             title: show.name ?? show.title,
             poster_path: show.poster_path,
@@ -81,7 +93,7 @@ export const movieRouter = createTRPCRouter({
           ...res,
           results,
         };
-      } catch (error) {
+      } catch {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Failed to get search result",

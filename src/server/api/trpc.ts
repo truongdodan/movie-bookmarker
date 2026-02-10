@@ -12,7 +12,6 @@ import { ZodError } from "zod";
 import { getServerAuthSession } from "../auth-session";
 
 import { db } from "~/server/db";
-import { get } from "http";
 
 /**
  * 1. CONTEXT
