@@ -29,9 +29,11 @@ export function SearchedMoiveList() {
       <h1 className="mb-4 text-2xl font-semibold">Search Results: </h1>
 
       <ul className="grid grid-cols-1 gap-6 md:grid-cols-1">
-        {data?.results?.map((movie: Movie) => (
-          <SearchedCard {...movie} key={movie.id} />
-        ))}
+        {data?.results
+          ?.filter((movie) => movie.title)
+          .map((movie) => (
+            <SearchedCard {...(movie as Movie)} key={movie.id} />
+          ))}
       </ul>
     </>
   );

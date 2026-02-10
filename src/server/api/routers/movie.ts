@@ -77,6 +77,7 @@ export const movieRouter = createTRPCRouter({
             if (!show) return false;
             if (show.media_type === "person") return false;
             if (!show.poster_path) return false;
+            if (!show.title) return false;
 
             return true;
           })
