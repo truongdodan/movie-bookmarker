@@ -18,13 +18,13 @@ export default function MovieDetails() {
     id: Number(id),
   });
   const addBookmark = api.bookmark.add.useMutation({
-    onSuccess: () => {
-      untils.bookmark.isBookmarked.invalidate({ id: Number(id) });
+    onSuccess: async () => {
+      await untils.bookmark.isBookmarked.invalidate({ id: Number(id) });
     },
   });
   const removeBookmark = api.bookmark.remove.useMutation({
-    onSuccess: () => {
-      untils.bookmark.isBookmarked.invalidate({ id: Number(id) });
+    onSuccess: async () => {
+      await untils.bookmark.isBookmarked.invalidate({ id: Number(id) });
     },
   });
   const isUpdating = addBookmark.isPending || removeBookmark.isPending;

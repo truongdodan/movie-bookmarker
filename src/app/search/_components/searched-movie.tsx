@@ -3,6 +3,7 @@
 import { api } from "~/trpc/react";
 import { SearchedCard } from "./searched-card";
 import { useSearchParams } from "next/navigation";
+import type { Movie } from "~/types/movie";
 
 export function SearchedMoiveList() {
   const searchParams = useSearchParams();
@@ -28,7 +29,7 @@ export function SearchedMoiveList() {
       <h1 className="mb-4 text-2xl font-semibold">Search Results: </h1>
 
       <ul className="grid grid-cols-1 gap-6 md:grid-cols-1">
-        {data?.results?.map((movie: any) => (
+        {data?.results?.map((movie: Movie) => (
           <SearchedCard {...movie} key={movie.id} />
         ))}
       </ul>
